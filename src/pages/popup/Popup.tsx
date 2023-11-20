@@ -5,66 +5,111 @@ import useStorage from '@src/shared/hooks/useStorage';
 import exampleThemeStorage from '@src/shared/storages/exampleThemeStorage';
 import withSuspense from '@src/shared/hoc/withSuspense';
 import withErrorBoundary from '@src/shared/hoc/withErrorBoundary';
+import ReactSpeedometer from 'react-d3-speedometer';
+import Overlay from '../content/ui/initializer';
 
+// basic structure for feature set:
+// {
+//   trackerBlocking: true,
+//   adBlocking: true,
+//   secureProxy: true,
+//   downloadProtection: true,
+//   disableJS: true,
+// }
+
+// {
+//   'Tracker Blocking': false,
+//   'Ad Blocking': false,
+//   'Secure Proxy': false,
+//   'Download Protection': false,
+//   'Disable JS': false,
+// }
 const Popup = () => {
-  const theme = useStorage(exampleThemeStorage);
+  // Feature tracker
+  const [features, setFeatures] = React.useState({
+    'Tracker Blocking': true,
+    'Ad Blocking': true,
+    'Secure Proxy': false,
+    'Download Protection': false,
+    'Disable JS': false,
+  });
+  const handleFeatureClick = (feature: string) => {
+    setFeatures(prevFeatures => ({
+      ...prevFeatures,
+      [feature]: !prevFeatures[feature],
+    }));
+  };
+  // Toggles the speedometer
+  const activeFeaturesCount = Object.values(features).filter(Boolean).length;
+  // Overlay handling
+  const [showOverlay, setShowOverlay] = React.useState(true);
 
+  // Function to handle the click event on the overlay
+  const handleOverlayClick = () => {
+    setShowOverlay(false);
+  };
   return (
     <div
-      className="App bg-custom-gray absolute inset-0 border-gray-700 justify-center flex flex-col flex-wrap h-full w-full p-1 content-evenly"
+      className="App  bg-custom-blue absolute inset-0 border-gray-700 flex flex-col flex-wrap h-screen w-full p-1"
       // style={{
       //   backgroundColor: theme === 'light' ? '#fff' : '#000',
       // }}
+      // style={{ paddingBottom: '3vh' }}
     >
-      <div className="app bg-custom-gray flex flex-col">
-        <header>
-          <a href="https://github.com/saxenaii/SurfShield" className="font-bold text-xl justify-end text-custom-green">
+      {showOverlay && <Overlay onClick={handleOverlayClick} />}
+      <div className="app bg-custom-blue flex flex-col gap-5 px-3 pb-6">
+        <header className="pt-4 inline-flex items-center justify-center flex-row-reverse px-9">
+          <img src={logo} className="w-10" alt="logo" />
+          <a href="https://github.com/saxenaii/SurfShield" className="font-bold text-xl justify-end text-custom-white">
             SurfShield
           </a>
         </header>
         <div>
-          <label for="steps-range" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Range steps
-          </label>
-          <input
-            id="steps-range"
-            type="range"
-            min="0"
-            max="5"
-            value="2.5"
-            step="1"
-            className="min-w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"></input>
+          <ReactSpeedometer
+            width={250}
+            height={150}
+            //fluidWidth={true}
+            needleHeightRatio={0.7}
+            value={activeFeaturesCount * 200}
+            customSegmentStops={[0, 250, 750, 1000]}
+            segmentColors={['#fbfdf6', '#5d8fd8', '#3e6f91']}
+            currentValueText="Security Score"
+            customSegmentLabels={[
+              {
+                text: 'Good',
+                position: 'OUTSIDE',
+                color: '#fbfdf6',
+              },
+              {
+                text: 'Great',
+                position: 'OUTSIDE',
+                color: '#fbfdf6',
+              },
+              {
+                text: 'Awesome!',
+                position: 'OUTSIDE',
+                color: '#fbfdf6',
+              },
+            ]}
+            ringWidth={47}
+            needleTransitionDuration={1250}
+            needleTransition="easeLinear"
+            needleColor={'#6fc151'}
+            textColor={'#fbfdf6'}
+            forceRender={true}
+          />
         </div>
-        <div className="flex flex-row max-w-lg">
-          <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <a href="#">
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Noteworthy technology acquisitions 2021
-              </h5>
-            </a>
-            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-              Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
-            </p>
-            <a
-              href="#"
-              className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-              Read more
-              <svg
-                className="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 14 10">
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M1 5h12m0 0L9 1m4 4L9 9"
-                />
-              </svg>
-            </a>
-          </div>
+        <div className="pb-2">
+          {Object.keys(features).map(feature => (
+            <div
+              key={feature}
+              className={`my-2 max-w-sm p-4 rounded-lg shadow  w-full flex flex-col gap-2 cursor-pointer font-bold text-sm ${
+                features[feature] ? 'bg-custom-green text-white' : ' bg-custom-gray text-custom-blue '
+              }`}
+              onClick={() => handleFeatureClick(feature)}>
+              {feature}
+            </div>
+          ))}
         </div>
       </div>
     </div>
