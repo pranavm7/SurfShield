@@ -77,22 +77,26 @@ const Popup = () => {
             customSegmentLabels={[
               {
                 text: 'Good',
+                // @ts-ignore
                 position: 'OUTSIDE',
                 color: '#fbfdf6',
               },
               {
                 text: 'Great',
+                // @ts-ignore
                 position: 'OUTSIDE',
                 color: '#fbfdf6',
               },
               {
                 text: 'Awesome!',
+                // @ts-ignore
                 position: 'OUTSIDE',
                 color: '#fbfdf6',
               },
             ]}
             ringWidth={47}
             needleTransitionDuration={1250}
+            // @ts-ignore
             needleTransition="easeLinear"
             needleColor={'#6fc151'}
             textColor={'#fbfdf6'}
