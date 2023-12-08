@@ -49,13 +49,7 @@ const Popup = () => {
     setShowOverlay(false);
   };
   return (
-    <div
-      className="App  bg-custom-blue absolute inset-0 border-gray-700 flex flex-col flex-wrap h-screen w-full p-1"
-      // style={{
-      //   backgroundColor: theme === 'light' ? '#fff' : '#000',
-      // }}
-      // style={{ paddingBottom: '3vh' }}
-    >
+    <div className="App  bg-custom-blue absolute inset-0 border-gray-700 flex flex-col flex-wrap h-screen w-full p-1">
       {showOverlay && <Overlay onClick={handleOverlayClick} />}
       <div className="app bg-custom-blue flex flex-col gap-5 px-3 pb-6">
         <header className="pt-4 inline-flex items-center justify-center flex-row-reverse px-9">
