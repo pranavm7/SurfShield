@@ -36,7 +36,11 @@
     "@testing-library/react": "14.0.0",
     "@types/chrome": "0.0.251",
     "@types/jest": "29.5.7",
+<<<<<<< HEAD
     "@types/node": "20.8.10",
+=======
+    "@types/node": "20.10.3",
+>>>>>>> f8734cc9fbbf7cd372d41816ae798b0d0a438d11
     "@types/react": "18.2.37",
     "@types/react-dom": "18.2.14",
     "@types/ws": "8.5.8",
